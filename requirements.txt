@@ -1,0 +1,15 @@
+pandas
+numpy
+fastapi
+uvicorn
+websockets==13.1
+sounddevice 
+numpy 
+aiofiles 
+python-dotenv
+azure-identity
+azure-core
+dotenv
+chainlit
+openai
+pycryptodome

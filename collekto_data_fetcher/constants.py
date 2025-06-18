@@ -1,0 +1,5 @@
+BASE_URL: str = "https://backendcrmuat.ltfinance.com"
+RAW_KEY: str = "collektoencrypte"
+AUTH_PATH: str =  "/crm/api/v2/profile/authenticate"
+LOAN_PATH: str =  "/api/v1/loans/id"
+DISP_PATH: str =  "/api/v1/call-disposition/caseHistory"

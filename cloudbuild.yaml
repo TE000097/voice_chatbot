@@ -1,0 +1,33 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+      - '.'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'voicebot-service'
+      - '--image=asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+      - '--region=asia-south1'
+      - '--platform=managed'
+      - '--port=9000'
+      - '--allow-unauthenticated'
+      - '--service-account=analytics-datapipeline-prod@analytics-datapipeline-prod.iam.gserviceaccount.com'
+      - '--set-secrets=AZURE_OPENAI_API_KEY=AZURE_OPENAI_API_KEY:latest'
+      - '--set-secrets=AZURE_OPENAI_ENDPOINT=AZURE_OPENAI_ENDPOINT:latest'
+      - '--set-secrets=COLLEKTO_USERNAME=COLLEKTO_USERNAME:latest'
+      - '--set-secrets=COLLEKTO_PASSWORD=COLLEKTO_PASSWORD:latest'
+      - '--set-secrets=MOCK_COLLEKTO_API=MOCK_COLLEKTO_API:latest'
+
+images:
+  - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
