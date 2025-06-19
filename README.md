@@ -2,3 +2,4 @@
 "# Test trigger 2" 
 "# Test trigger 3" 
 "push 3" 
+"push 4" 
