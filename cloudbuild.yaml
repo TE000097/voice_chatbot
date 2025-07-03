@@ -16,7 +16,7 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      - 'voicebot-service-v2'
+      - 'voicebot-service'
       - '--image=asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
       - '--region=asia-south1'
       - '--platform=managed'
