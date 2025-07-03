@@ -1,33 +1,34 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _TAG: "manual"
+
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
-      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/risk-copilot-uat/server:${_TAG}'
       - '.'
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+      - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/risk-copilot-uat/server:${_TAG}'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
-      - 'voicebot-service'
-      - '--image=asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+      - 'risk-copilot-app'
+      - '--image=asia-south1-docker.pkg.dev/analytics-datapipeline-prod/risk-copilot-uat/server:${_TAG}'
       - '--region=asia-south1'
       - '--platform=managed'
-      - '--port=9000'
+      - '--port=8080'
       - '--allow-unauthenticated'
-      - '--service-account=analytics-datapipeline-prod@analytics-datapipeline-prod.iam.gserviceaccount.com'
-      - '--set-secrets=AZURE_OPENAI_API_KEY=AZURE_OPENAI_API_KEY:latest'
-      - '--set-secrets=AZURE_OPENAI_ENDPOINT=AZURE_OPENAI_ENDPOINT:latest'
-      - '--set-secrets=COLLEKTO_USERNAME=COLLEKTO_USERNAME:latest'
-      - '--set-secrets=COLLEKTO_PASSWORD=COLLEKTO_PASSWORD:latest'
-      - '--set-secrets=MOCK_COLLEKTO_API=MOCK_COLLEKTO_API:latest'
+      - '--service-account=ltfs-customer-journey-instance@analytics-datapipeline-prod.iam.gserviceaccount.com'
 
 images:
-  - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/cj-chatbot/server:$COMMIT_SHA'
+  - 'asia-south1-docker.pkg.dev/analytics-datapipeline-prod/risk-copilot-uat/server:${_TAG}'
